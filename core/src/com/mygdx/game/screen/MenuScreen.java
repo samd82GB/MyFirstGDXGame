@@ -6,18 +6,26 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.Main;
 
 public class MenuScreen implements Screen {
-    private Main game;
-    private SpriteBatch batch;
-    private Texture img;
+    private final Main game;
+    private final SpriteBatch batch;
+    private final Texture img;
+    private final Rectangle startRect;
+    private final ShapeRenderer shapeRenderer;
+
 
     public MenuScreen(Main game) {
         this.game = game;
         batch = new SpriteBatch();
         img = new Texture("Red_wolf.png");
+        startRect = new Rectangle(0, 0, img.getWidth(), img.getHeight());
+        shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -33,11 +41,22 @@ public class MenuScreen implements Screen {
         batch.draw(img, 0,0);
         batch.end();
 
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(startRect.x, startRect.y, startRect.width, startRect.height);
+        shapeRenderer.end();
 
-        if (Gdx.input.isButtonJustPressed(Input.Keys.ANY_KEY)) {
-            dispose();
-            game.setScreen(new GameScreen(game));
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            int x = Gdx.input.getX();
+            int y = Gdx.graphics.getHeight() - Gdx.input.getY();
+            Vector2 vect = new Vector2(x, y);
+            if (startRect.contains(x, y)) {
+                dispose();
+                game.setScreen(new GameScreen(game));
+            }
         }
+
+
     }
 
     @Override

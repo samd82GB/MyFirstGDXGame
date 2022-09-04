@@ -35,7 +35,7 @@ public class GameScreen  implements Screen {
 
 
 
-        if (Gdx.input.isButtonJustPressed(Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             dispose();
             game.setScreen(new MenuScreen(game));
         }
